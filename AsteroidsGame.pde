@@ -27,21 +27,26 @@ public void keyPressed()
     }
     if (keyCode == LEFT) //rotate left
     {
-
+      apollo.setPointDirection((int)(apollo.getPointDirection()) - 10);
     }
     if (keyCode == RIGHT) //rotate right
     {
-
+      apollo.setPointDirection((int)(apollo.getPointDirection()) + 10);
     }
   }
+  if (keyCode == ' ') //hyperspace
+    {
+      apollo.setX((int)(Math.random()*500)+50);
+      apollo.setY((int)(Math.random()*500)+50);
+    }
 }
 class SpaceShip extends Floater  
 {   
     SpaceShip()
     {
       corners = 7;
-      int[] xS = {7,-5,-6,-12,-12,-6,-5};
-      int[] yS = {0,8,6,3,-3,-6,-8};
+      int[] xS = {7,-5,-6,-11,-11,-6,-5};
+      int[] yS = {0,8,6,4,-4,-6,-8};
       xCorners = xS;
       yCorners = yS;
       myColor = color(0,100,200);
