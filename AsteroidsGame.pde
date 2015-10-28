@@ -23,9 +23,11 @@ public void keyPressed()
   {
     if (keyCode == UP) //accelerate
     {
-      
+      /*apollo.setDirectionX(apollo.getDirectionX() + 2);
+      apollo.setDirectionY(apollo.getDirectionY() + 2);*/
+      //how do i have the spaceship move forward in the PointDirection?
     }
-    if (keyCode == LEFT) //rotate left
+    if (keyCode == LEFT) //rotate left 
     {
       apollo.setPointDirection((int)(apollo.getPointDirection()) - 10);
     }
@@ -38,6 +40,8 @@ public void keyPressed()
     {
       apollo.setX((int)(Math.random()*500)+50);
       apollo.setY((int)(Math.random()*500)+50);
+      apollo.setDirectionX(0);
+      apollo.setDirectionY(0);
     }
 }
 class SpaceShip extends Floater  
