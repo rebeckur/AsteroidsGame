@@ -17,6 +17,7 @@ header {
 }
 
 footer {
+    margin-top: 5px;
 	font-style: italic;
 	font-size: 12px;
 }
