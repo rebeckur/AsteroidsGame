@@ -25,6 +25,10 @@ public void keyPressed()
     if (keyCode == UP) //accelerate
     {
       apollo.accelerate(0.8);
+      stroke(255);
+      /*line(apollo.getX()-10, apollo.getY()-2, apollo.getX()-20, apollo.getY()-5);
+      line(apollo.getX()-10, apollo.getY(), apollo.getX()-20, apollo.getY());
+      line(apollo.getX()-10, apollo.getY()+2, apollo.getX()-20, apollo.getY()+5);*/
     }
     if (keyCode == DOWN) //decelerate
     {
@@ -32,11 +36,11 @@ public void keyPressed()
     }
     if (keyCode == LEFT) //rotate left 
     {
-      apollo.setPointDirection((int)(apollo.getPointDirection()) - 10);
+      apollo.rotate(-10);
     }
     if (keyCode == RIGHT) //rotate right
     {
-      apollo.setPointDirection((int)(apollo.getPointDirection()) + 10);
+      apollo.rotate(10);
     }
   }
   if (keyCode == ' ') //hyperspace
