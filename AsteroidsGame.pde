@@ -3,17 +3,18 @@ SpaceShip apollo;
 
 public void setup() 
 {
-  size(600,600);
+  size(700,700);
   apollo = new SpaceShip();
 }
 public void draw() 
 {
-  //your code here
   background(0);
   fill(255);
-  text("X Direction: " + apollo.getDirectionX(), 0, 10);
-  text("Y Direction: " + apollo.getDirectionY(), 0, 20);
-  text("Spaceship Direction: " + apollo.getPointDirection(), 0, 30);
+  /*text("Y Center Direction: " + apollo.getY(), 0, 10);
+  text("X Center Direction: " + apollo.getX(), 0, 20);
+  text("X Direction: " + apollo.getDirectionX(), 0, 30);
+  text("Y Direction: " + apollo.getDirectionY(), 0, 40);
+  text("Spaceship Direction: " + apollo.getPointDirection(), 0, 50);*/ 
   apollo.move();
   apollo.show();
 }
@@ -23,9 +24,11 @@ public void keyPressed()
   {
     if (keyCode == UP) //accelerate
     {
-      /*apollo.setDirectionX(apollo.getDirectionX() + 2);
-      apollo.setDirectionY(apollo.getDirectionY() + 2);*/
-      //how do i have the spaceship move forward in the PointDirection?
+      apollo.accelerate(0.8);
+    }
+    if (keyCode == DOWN) //decelerate
+    {
+      apollo.accelerate(-0.8);
     }
     if (keyCode == LEFT) //rotate left 
     {
@@ -49,8 +52,8 @@ class SpaceShip extends Floater
     SpaceShip()
     {
       corners = 7;
-      int[] xS = {7,-5,-6,-11,-11,-6,-5};
-      int[] yS = {0,8,6,4,-4,-6,-8};
+      int[] xS = {8,-6,-7,-10,-10,-7,-6};
+      int[] yS = {0,9,5,5,-5,-5,-9};
       xCorners = xS;
       yCorners = yS;
       myColor = color(0,100,200);

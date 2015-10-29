@@ -2,7 +2,7 @@
 body {
     background-color: rgb(100,100,100);
     color: rgb(0,0,0);
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Press Start 2P', cursive;
     text-align: center;
 }
 
@@ -17,8 +17,7 @@ header {
 }
 
 footer {
-    font-family: 'Press Start 2P', cursive;
 	font-style: italic;
-	font-size: 18px;
+	font-size: 12px;
 }
 
