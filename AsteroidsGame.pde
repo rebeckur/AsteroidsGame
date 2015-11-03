@@ -35,25 +35,30 @@ public void keyPressed()
     {
       apollo.accelerate(0.9);
       //need to fix so that lines coming out of spaceship are always behind it (angles!!)
-      /*double angle = apollo.getPointDirection()*(Math.PI/180);
-      int x1 = (int)(apollo.getX()-Math.cos(angle));
-      int x2 = (int)(apollo.getX()-Math.cos(angle));
+      double angle = apollo.getPointDirection()*(Math.PI/180);
+      int x1 = (int)(apollo.getX()-Math.cos(angle)*15);
+      int x2 = (int)(apollo.getX()-Math.cos(angle)*11);
+      int y1 = (int)(apollo.getY()-Math.sin(angle)*15);
+      int y2 = (int)(apollo.getY()-Math.sin(angle)*10);
       stroke(255);
-      line(x1, apollo.getY()-3, x2, apollo.getY()-5);
-      line(x1, apollo.getY(), x2, apollo.getY());
-      line(x1, apollo.getY()+3, x2, apollo.getY()+5);*/
+      line(x1, y1, x2, y2); //center line
+      //line(x1, y1-(int)(Math.cos(angle)*5), x2, y2);
+      System.out.println("Angle: " + angle);
+      System.out.println("1: " + "(" + x1 + ", " + y1 + ")");
+      System.out.println("2: " + "(" + x2 + ", " + y2 + ")");
     }
     if (keyCode == DOWN) {apollo.accelerate(-0.9);} //decelerate
     if (keyCode == LEFT) {apollo.rotate(-10);} //rotate left 
     if (keyCode == RIGHT) {apollo.rotate(10);} //rotate right 
   }
-  if (keyCode == ' ') //hyperspace (spacebar)
-    {
-      apollo.setX((int)(Math.random()*500)+50);
-      apollo.setY((int)(Math.random()*500)+50);
-      apollo.setDirectionX(0);
-      apollo.setDirectionY(0);
-    }
+  if (key == ENTER) //hyperspace
+  {
+    apollo.setX((int)(Math.random()*500)+50);
+    apollo.setY((int)(Math.random()*500)+50);
+    apollo.setPointDirection((int)(Math.random()*360));
+    apollo.setDirectionX(0);
+    apollo.setDirectionY(0);
+  }
 }
 class Star
 {
@@ -67,7 +72,7 @@ class Star
   {
     fill(255, 255, 255, 130);
     noStroke();
-    ellipse(starX, starY, 3, 3);
+    ellipse(starX, starY, 2, 2);
   }
 }
 class SpaceShip extends Floater  
@@ -79,7 +84,7 @@ class SpaceShip extends Floater
     int[] yS = {0,9,5,5,-5,-5,-9};
     xCorners = xS;
     yCorners = yS;
-    myColor = color(0,100,200);
+    myColor = color(156, 230, 220);
     myCenterX = 300;
     myCenterY = 300;
     myDirectionX = 0;
