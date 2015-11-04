@@ -1,7 +1,7 @@
 //your variable declarations here
 SpaceShip apollo;
 
-Star[] sky = new Star[300];
+Star[] sky = new Star[350];
 
 public void setup() 
 {
@@ -31,22 +31,7 @@ public void keyPressed()
 {
   if (key == CODED)
   {
-    if (keyCode == UP) //accelerate
-    {
-      apollo.accelerate(0.9);
-      //need to fix so that lines coming out of spaceship are always behind it (angles!!)
-      double angle = apollo.getPointDirection()*(Math.PI/180);
-      int x1 = (int)(apollo.getX()-Math.cos(angle)*15);
-      int x2 = (int)(apollo.getX()-Math.cos(angle)*11);
-      int y1 = (int)(apollo.getY()-Math.sin(angle)*15);
-      int y2 = (int)(apollo.getY()-Math.sin(angle)*10);
-      stroke(255);
-      line(x1, y1, x2, y2); //center line
-      //line(x1, y1-(int)(Math.cos(angle)*5), x2, y2);
-      System.out.println("Angle: " + angle);
-      System.out.println("1: " + "(" + x1 + ", " + y1 + ")");
-      System.out.println("2: " + "(" + x2 + ", " + y2 + ")");
-    }
+    if (keyCode == UP) {apollo.accelerate(0.9);}//accelerate
     if (keyCode == DOWN) {apollo.accelerate(-0.9);} //decelerate
     if (keyCode == LEFT) {apollo.rotate(-10);} //rotate left 
     if (keyCode == RIGHT) {apollo.rotate(10);} //rotate right 
@@ -70,7 +55,7 @@ class Star
   }
   public void show()
   {
-    fill(255, 255, 255, 130);
+    fill(255, 255, 255, 150);
     noStroke();
     ellipse(starX, starY, 2, 2);
   }
@@ -136,7 +121,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     //rotates the floater by a given number of degrees    
     myPointDirection+=nDegreesOfRotation;   
   }   
-  public void move ()   //move the floater in the current direction of travel
+  public void move ()  //move the floater in the current direction of travel
   {      
     //change the x and y coordinates by myDirectionX and myDirectionY       
     myCenterX += myDirectionX;    
