@@ -1,7 +1,7 @@
 //your variable declarations here
 SpaceShip apollo;
 
-Star[] sky = new Star[350];
+Star[] sky = new Star[(int)(Math.random()*350)+300];
 
 public void setup() 
 {
