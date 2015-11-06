@@ -2,7 +2,7 @@
 body {
     background: url('space.jpg');
     background-repeat: none;
-    background-size: cover;
+    //background-size: cover;
     background-position: center center;
     color: rgb(255,255,255);
     font-family: 'Press Start 2P', cursive;
