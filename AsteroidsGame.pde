@@ -1,5 +1,6 @@
 //your variable declarations here
 SpaceShip apollo;
+Asteroid asteroids;
 
 Star[] sky = new Star[(int)(Math.random()*350)+300];
 
@@ -7,6 +8,7 @@ public void setup()
 {
   size(700,700);
   apollo = new SpaceShip();
+  asteroids = new Asteroid();
   for (int i = 0; i < sky.length; i++)
   {
     sky[i] = new Star();
@@ -26,6 +28,8 @@ public void draw()
   text("Spaceship Direction: " + apollo.getPointDirection(), 0, 50);*/ //Code to list out the positions
   apollo.move();
   apollo.show();
+  asteroids.move();
+  asteroids.show();
 }
 public void keyPressed()
 {
@@ -75,6 +79,40 @@ class SpaceShip extends Floater
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;
+  }
+  public void setX(int x){myCenterX = x;}  
+  public int getX(){return (int)myCenterX;}   
+  public void setY(int y){myCenterY = y;}   
+  public int getY(){return (int)myCenterY;}   
+  public void setDirectionX(double x){myDirectionX = x;}  
+  public double getDirectionX(){return myDirectionX;}  
+  public void setDirectionY(double y){myDirectionY = y;}   
+  public double getDirectionY(){return myDirectionY;} 
+  public void setPointDirection(int degrees){myPointDirection = degrees;} 
+  public double getPointDirection(){return myPointDirection;}
+}
+class Asteroid extends Floater
+{
+  private int rotSpeed;
+  public Asteroid()
+  {
+    rotSpeed = (int)(Math.random()*17)-8;
+    corners = 6;
+    int[] xS = {9,-3,-7,-3,5,7};
+    int[] yS = {4,6,4,-6,-3,-5}; //need to fix coordinates
+    xCorners = xS;
+    yCorners = yS;
+    myColor = color(255);
+    myCenterX = (int)(Math.random()*700);
+    myCenterY = (int)(Math.random()*700);
+    myDirectionX = (int)(Math.random()*11)-5;
+    myDirectionY = (int)(Math.random()*11)-5;
+    myPointDirection = 0;
+  }
+  public void move()
+  {
+    rotate(rotSpeed);
+    super.move();
   }
   public void setX(int x){myCenterX = x;}  
   public int getX(){return (int)myCenterX;}   
