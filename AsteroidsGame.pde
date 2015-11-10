@@ -1,17 +1,21 @@
 //your variable declarations here
 SpaceShip apollo;
-Asteroid asteroids;
-
-Star[] sky = new Star[(int)(Math.random()*350)+300];
+Asteroid[] asteroids;
+Star[] sky;
 
 public void setup() 
 {
   size(700,700);
   apollo = new SpaceShip();
-  asteroids = new Asteroid();
+  asteroids = new Asteroid[(int)(Math.random()*10)+3];
+  sky = new Star[(int)(Math.random()*350)+300];
   for (int i = 0; i < sky.length; i++)
   {
     sky[i] = new Star();
+  }
+  for (int i = 0; i < asteroids.length; i++)
+  {
+    asteroids[i] = new Asteroid();
   }
 }
 public void draw() 
@@ -21,6 +25,11 @@ public void draw()
   {
     sky[i].show();
   }
+  for (int i = 0; i < asteroids.length; i++)
+  {
+    asteroids[i].move();
+    asteroids[i].show();
+  }
   /*text("Y Center Direction: " + apollo.getY(), 0, 10);
   text("X Center Direction: " + apollo.getX(), 0, 20);
   text("X Direction: " + apollo.getDirectionX(), 0, 30);
@@ -28,8 +37,8 @@ public void draw()
   text("Spaceship Direction: " + apollo.getPointDirection(), 0, 50);*/ //Code to list out the positions
   apollo.move();
   apollo.show();
-  asteroids.move();
-  asteroids.show();
+  /*asteroids.move();
+  asteroids.show();*/
 }
 public void keyPressed()
 {
@@ -97,16 +106,32 @@ class Asteroid extends Floater
   public Asteroid()
   {
     rotSpeed = (int)(Math.random()*17)-8;
-    corners = 6;
-    int[] xS = {9,-3,-7,-3,5,7};
-    int[] yS = {4,6,4,-6,-3,-5}; //need to fix coordinates
-    xCorners = xS;
-    yCorners = yS;
+
+    for (int i = 0; i < asteroids.length; i++) //variety of asteroids!
+    {
+      if (i % 2 == 0)
+      {
+        corners = 5;
+        int[] xS = {-4, 1, -7, 9, 8};
+        int[] yS = {-10, -3, 0, 7, -5};
+        xCorners = xS;
+        yCorners = yS;
+      }
+      else
+      {
+        corners = 9;
+        int[] xS2 = {10, 6, 0, -8, -9, -3, -10, -1, 4};
+        int[] yS2 = {0, -6, -10, -10, -3, -2, 2, 9, 7};
+        xCorners = xS2;
+        yCorners = yS2;
+      }
+    }
+    
     myColor = color(255);
     myCenterX = (int)(Math.random()*700);
     myCenterY = (int)(Math.random()*700);
-    myDirectionX = (int)(Math.random()*11)-5;
-    myDirectionY = (int)(Math.random()*11)-5;
+    myDirectionX = (int)(Math.random()*7)-3;
+    myDirectionY = (int)(Math.random()*7)-3;
     myPointDirection = 0;
   }
   public void move()
