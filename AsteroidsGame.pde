@@ -106,10 +106,6 @@ class Asteroid extends Floater
   public Asteroid()
   {
     rotSpeed = (int)(Math.random()*17)-8;
-    if (rotSpeed == 0)
-    {
-      rotSpeed = (int)(Math.random()*7)+1;
-    }
     if (rotSpeed % 3 == 0)
     {
       corners = 5;
