@@ -106,27 +106,27 @@ class Asteroid extends Floater
   public Asteroid()
   {
     rotSpeed = (int)(Math.random()*17)-8;
-
-    for (int i = 0; i < asteroids.length; i++) //variety of asteroids!
+    if (rotSpeed == 0)
     {
-      if (i % 2 == 0)
-      {
-        corners = 5;
-        int[] xS = {-4, 1, -7, 9, 8};
-        int[] yS = {-10, -3, 0, 7, -5};
-        xCorners = xS;
-        yCorners = yS;
-      }
-      else
-      {
-        corners = 9;
-        int[] xS2 = {10, 6, 0, -8, -9, -3, -10, -1, 4};
-        int[] yS2 = {0, -6, -10, -10, -3, -2, 2, 9, 7};
-        xCorners = xS2;
-        yCorners = yS2;
-      }
+      rotSpeed = (int)(Math.random()*7)+1;
     }
-    
+    if (rotSpeed % 3 == 0)
+    {
+      corners = 5;
+      int[] xS = {-4, 1, -7, 9, 8};
+      int[] yS = {-10, -3, 0, 7, -5};
+      xCorners = xS;
+      yCorners = yS;
+    }
+    else
+    {
+      corners = 9;
+      int[] xS2 = {10, 6, 0, -8, -9, -3, -10, -1, 4};
+      int[] yS2 = {0, -6, -10, -10, -3, -2, 2, 9, 7};
+      xCorners = xS2;
+      yCorners = yS2;
+    }
+   }
     myColor = color(255);
     myCenterX = (int)(Math.random()*700);
     myCenterY = (int)(Math.random()*700);
@@ -226,4 +226,3 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     endShape(CLOSE);  
   }   
 } 
-
