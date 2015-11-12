@@ -103,7 +103,6 @@ class SpaceShip extends Floater
 class Asteroid extends Floater
 {
   private int rotSpeed;
-  private int i;
   public Asteroid()
   {
     rotSpeed = (int)(Math.random()*17)-8;
@@ -123,14 +122,13 @@ class Asteroid extends Floater
       xCorners = xS2;
       yCorners = yS2;
     }
-   }
     myColor = color(255);
     myCenterX = (int)(Math.random()*700);
     myCenterY = (int)(Math.random()*700);
     myDirectionX = (int)(Math.random()*7)-3;
     myDirectionY = (int)(Math.random()*7)-3;
     myPointDirection = 0;
-  }
+    }
   public void move()
   {
     rotate(rotSpeed);
