@@ -7,7 +7,7 @@ public void setup()
 {
   size(700,700);
   apollo = new SpaceShip();
-  asteroids = new Asteroid[(int)(Math.random()*10)+3];
+  asteroids = new Asteroid[(int)(Math.random()*8)+5];
   sky = new Star[(int)(Math.random()*350)+300];
   for (int i = 0; i < sky.length; i++)
   {
@@ -35,10 +35,24 @@ public void draw()
   text("X Direction: " + apollo.getDirectionX(), 0, 30);
   text("Y Direction: " + apollo.getDirectionY(), 0, 40);
   text("Spaceship Direction: " + apollo.getPointDirection(), 0, 50);*/ //Code to list out the positions
-  apollo.move();
-  apollo.show();
-  /*asteroids.move();
-  asteroids.show();*/
+  if(get(apollo.getX(), apollo.getY()) == color(255)) //to determine if spaceship has crashed
+  {
+    apollo.setAlive(false);
+  }
+  if (apollo.getAlive() == true){
+    apollo.move();
+    apollo.show();
+  }
+  else
+  {
+    background(0);
+    textSize(32);
+    text("Try again", 280, 300);
+    stroke(255);
+    strokeWeight(3);
+    noFill();
+    rect(260, 400, 200, 50);
+  }
 }
 public void keyPressed()
 {
@@ -74,7 +88,8 @@ class Star
   }
 }
 class SpaceShip extends Floater  
-{   
+{
+  private boolean alive;
   public SpaceShip()
   {
     corners = 7;
@@ -88,6 +103,7 @@ class SpaceShip extends Floater
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;
+    alive = true;
   }
   public void setX(int x){myCenterX = x;}  
   public int getX(){return (int)myCenterX;}   
@@ -99,6 +115,8 @@ class SpaceShip extends Floater
   public double getDirectionY(){return myDirectionY;} 
   public void setPointDirection(int degrees){myPointDirection = degrees;} 
   public double getPointDirection(){return myPointDirection;}
+  public boolean getAlive(){return alive;}
+  public void setAlive(boolean status){alive = status;}
 }
 class Asteroid extends Floater
 {
@@ -106,6 +124,10 @@ class Asteroid extends Floater
   public Asteroid()
   {
     rotSpeed = (int)(Math.random()*17)-8;
+    if (rotSpeed == 0)
+    {
+      rotSpeed = (int)(Math.random()*5)+1;
+    }
     if ((int)(Math.random()*2) == 0)
     {
       corners = 5;
