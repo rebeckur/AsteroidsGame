@@ -107,8 +107,7 @@ class Asteroid extends Floater
   public Asteroid()
   {
     rotSpeed = (int)(Math.random()*17)-8;
-    i = (int)(Math.random()*22);
-    if (i % 3 == 0)
+    if ((int)(Math.random()*22 % 3 == 0)
     {
       corners = 5;
       int[] xS = {-4, 1, -7, 9, 8};
