@@ -103,10 +103,12 @@ class SpaceShip extends Floater
 class Asteroid extends Floater
 {
   private int rotSpeed;
+  private int i;
   public Asteroid()
   {
     rotSpeed = (int)(Math.random()*17)-8;
-    if (rotSpeed % 3 == 0)
+    i = (int)(Math.random()*22);
+    if (i % 3 == 0)
     {
       corners = 5;
       int[] xS = {-4, 1, -7, 9, 8};
