@@ -20,28 +20,23 @@ public void setup()
 }
 public void draw() 
 {
-  background(0);
-  for (int i = 0; i < sky.length; i++)
-  {
-    sky[i].show();
-  }
-  for (int i = 0; i < asteroids.length; i++)
-  {
-    asteroids[i].move();
-    asteroids[i].show();
-  }
-  /*text("Y Center Direction: " + apollo.getY(), 0, 10);
-  text("X Center Direction: " + apollo.getX(), 0, 20);
-  text("X Direction: " + apollo.getDirectionX(), 0, 30);
-  text("Y Direction: " + apollo.getDirectionY(), 0, 40);
-  text("Spaceship Direction: " + apollo.getPointDirection(), 0, 50);*/ //Code to list out the positions
   if(get(apollo.getX(), apollo.getY()) == color(255)) //to determine if spaceship has crashed
   {
     apollo.setAlive(false);
   }
   if (apollo.getAlive() == true){
+    background(0);
+    for (int i = 0; i < sky.length; i++)
+    {
+      sky[i].show();
+    }
     apollo.move();
     apollo.show();
+    for (int i = 0; i < asteroids.length; i++)
+    {
+      asteroids[i].move();
+      asteroids[i].show();
+    }
   }
   else
   {
@@ -52,6 +47,14 @@ public void draw()
     strokeWeight(3);
     noFill();
     rect(260, 400, 200, 50);
+    if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
+    {
+      apollo.setAlive(true);
+      for (int i = 0; i < asteroids.length; i++)
+      {
+        asteroids[i] = new Asteroid();
+      }
+    }
   }
 }
 public void keyPressed()
