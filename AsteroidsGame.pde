@@ -20,7 +20,7 @@ public void setup()
 }
 public void draw() 
 {
-  if(get(apollo.getX(), apollo.getY()) == color(255)) //to determine if spaceship has crashed
+  if((get(apollo.getX(), apollo.getY()) == color(255))) //to determine if spaceship has crashed
   {
     apollo.setAlive(false);
   }
@@ -47,6 +47,7 @@ public void draw()
     strokeWeight(3);
     noFill();
     rect(260, 400, 200, 50);
+    text("RESTART", 290, 435);
     if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
     {
       apollo.setAlive(true);
@@ -54,6 +55,8 @@ public void draw()
       {
         asteroids[i] = new Asteroid();
       }
+      apollo.setDirectionX(0);
+      apollo.setDirectionY(0);
     }
   }
 }
@@ -126,10 +129,10 @@ class Asteroid extends Floater
   private int rotSpeed;
   public Asteroid()
   {
-    rotSpeed = (int)(Math.random()*17)-8;
-    if (rotSpeed == 0)
+    rotSpeed = (int)(Math.random()*13)-6;
+    if(rotSpeed == 0)
     {
-      rotSpeed = (int)(Math.random()*5)+1;
+      rotSpeed = (int)(Math.random()*10)+2;
     }
     if ((int)(Math.random()*2) == 0)
     {
@@ -142,7 +145,7 @@ class Asteroid extends Floater
     else
     {
       corners = 9;
-      int[] xS2 = {10, 6, 0, -8, -9, -3, -10, -1, 4};
+      int[] xS2 = {10, 6, 0, -8, -7, -3, -10, -1, 4};
       int[] yS2 = {0, -6, -10, -10, -3, -2, 2, 9, 7};
       xCorners = xS2;
       yCorners = yS2;
@@ -152,6 +155,11 @@ class Asteroid extends Floater
     myCenterY = (int)(Math.random()*700);
     myDirectionX = (int)(Math.random()*7)-3;
     myDirectionY = (int)(Math.random()*7)-3;
+    if (myDirectionX == 0 && myDirectionY == 0)
+    {
+      myDirectionX = (int)(Math.random()*3)+1;
+      myDirectionY = (int)(Math.random()*3)+1;
+    }
     myPointDirection = 0;
     }
   public void move()
