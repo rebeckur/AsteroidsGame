@@ -1,21 +1,24 @@
 //your variable declarations here
 SpaceShip apollo;
-Asteroid[] asteroids;
+//Asteroid[] asteroids;
 Star[] sky;
+ArrayList<Asteroid> groupAsteroids;
 
 public void setup() 
 {
   size(700,700);
   apollo = new SpaceShip();
-  asteroids = new Asteroid[(int)(Math.random()*8)+5];
+  //asteroids = new Asteroid[(int)(Math.random()*6)+5];
+  groupAsteroids = new ArrayList<Asteroid>();
   sky = new Star[(int)(Math.random()*350)+300];
   for (int i = 0; i < sky.length; i++)
   {
     sky[i] = new Star();
   }
-  for (int i = 0; i < asteroids.length; i++)
+  for (int i = 0; i < 10/*asteroids.length*/; i++)
   {
-    asteroids[i] = new Asteroid();
+    //asteroids[i] = new Asteroid();
+    groupAsteroids.add(new Asteroid());
   }
 }
 public void draw() 
@@ -32,13 +35,15 @@ public void draw()
     }
     apollo.move();
     apollo.show();
-    for (int i = 0; i < asteroids.length; i++)
+    for (int i = 0; i < groupAsteroids.size()/*asteroids.length*/; i++)
     {
-      asteroids[i].move();
-      asteroids[i].show();
+      /*asteroids[i].move();
+      asteroids[i].show();*/
+      (groupAsteroids.get(i)).move();
+      (groupAsteroids.get(i)).show();
     }
   }
-  else
+  else //makes lose screen
   {
     background(0);
     textSize(32);
@@ -46,29 +51,26 @@ public void draw()
     stroke(255);
     strokeWeight(3);
     noFill();
-    rect(260, 400, 200, 50);
+    rect(260, 400, 200, 50);  
     text("RESTART", 290, 435);
     if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
     {
       apollo.setAlive(true);
-      for (int i = 0; i < asteroids.length; i++)
+      /*for (int i = 0; i < asteroids.length; i++)
       {
         asteroids[i] = new Asteroid();
-      }
+      }*/
       apollo.setDirectionX(0);
       apollo.setDirectionY(0);
-    }
+    } //makes restart button
   }
 }
 public void keyPressed()
 {
-  if (key == CODED)
-  {
-    if (keyCode == UP) {apollo.accelerate(0.9);}//accelerate
-    if (keyCode == DOWN) {apollo.accelerate(-0.9);} //decelerate
-    if (keyCode == LEFT) {apollo.rotate(-10);} //rotate left 
-    if (keyCode == RIGHT) {apollo.rotate(10);} //rotate right 
-  }
+  if (keyCode == UP) {apollo.accelerate(0.9);}//accelerate
+  if (keyCode == DOWN) {apollo.accelerate(-0.9);} //decelerate
+  if (keyCode == LEFT) {apollo.rotate(-10);} //rotate left 
+  if (keyCode == RIGHT) {apollo.rotate(10);} //rotate right 
   if (key == ENTER) //hyperspace
   {
     apollo.setX((int)(Math.random()*500)+50);
@@ -104,8 +106,8 @@ class SpaceShip extends Floater
     xCorners = xS;
     yCorners = yS;
     myColor = color(156, 230, 220);
-    myCenterX = 300;
-    myCenterY = 300;
+    myCenterX = 350;
+    myCenterY = 350;
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;
@@ -132,8 +134,8 @@ class Asteroid extends Floater
     rotSpeed = (int)(Math.random()*13)-6;
     if(rotSpeed == 0)
     {
-      rotSpeed = (int)(Math.random()*10)+2;
-    }
+      rotSpeed = (int)(Math.random()*6)+2;
+    } //making sure all the asteroids rotate
     if ((int)(Math.random()*2) == 0)
     {
       corners = 5;
@@ -149,17 +151,17 @@ class Asteroid extends Floater
       int[] yS2 = {0, -6, -10, -10, -3, -2, 2, 9, 7};
       xCorners = xS2;
       yCorners = yS2;
-    }
+    } //random variations of an asteroid in the array
     myColor = color(255);
     myCenterX = (int)(Math.random()*700);
     myCenterY = (int)(Math.random()*700);
-    myDirectionX = (int)(Math.random()*7)-3;
-    myDirectionY = (int)(Math.random()*7)-3;
+    myDirectionX = (int)(Math.random()*6)-2;
+    myDirectionY = (int)(Math.random()*6)-2;
     if (myDirectionX == 0 && myDirectionY == 0)
     {
       myDirectionX = (int)(Math.random()*3)+1;
       myDirectionY = (int)(Math.random()*3)+1;
-    }
+    } //making sure none of the asteroids are idle
     myPointDirection = 0;
     }
   public void move()
