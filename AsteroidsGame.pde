@@ -60,9 +60,9 @@ public void draw()
       {
         asteroids[i] = new Asteroid();
       }*/
-      for (int i = 0; i < groupAsteroid.size; i++)
+      for (int i = 0; i < groupAsteroids.size; i++)
       {
-        groupAsteroid.set(i, new Asteroid());
+        groupAsteroids.set(i, new Asteroid());
       }
       apollo.setDirectionX(0);
       apollo.setDirectionY(0);
