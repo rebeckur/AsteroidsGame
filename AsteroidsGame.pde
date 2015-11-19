@@ -60,7 +60,7 @@ public void draw()
       {
         asteroids[i] = new Asteroid();
       }*/
-      for (int i = 0; i < groupAsteroids.size; i++)
+      for (int i = 0; i < groupAsteroids.size(); i++)
       {
         groupAsteroids.set(i, new Asteroid());
       }
