@@ -23,24 +23,38 @@ public void setup()
 }
 public void draw() 
 {
-  if((get(apollo.getX(), apollo.getY()) == color(255))) //to determine if spaceship has crashed
+  if ((get(apollo.getX(), apollo.getY()) == color(255))) //to determine if spaceship has crashed
+  {
+    apollo.setLives(apollo.getLives()-1);
+  }
+
+  if (apollo.getLives() == 0)
   {
     apollo.setAlive(false);
   }
+ 
   if (apollo.getAlive() == true){
     background(0);
     for (int i = 0; i < sky.length; i++)
     {
       sky[i].show();
     }
+    textSize(20);
+    fill(255);
+    text("Lives: " + apollo.getLives(), 40, 40);
     apollo.move();
     apollo.show();
-    for (int i = 0; i < groupAsteroids.size()/*asteroids.length*/; i++)
+    for (int i = 0; i < groupAsteroids.size(); i++)
     {
-      /*asteroids[i].move();
-      asteroids[i].show();*/
-      (groupAsteroids.get(i)).move();
-      (groupAsteroids.get(i)).show();
+      if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
+      {
+        groupAsteroids.remove(i);
+      }
+      else
+      {
+        (groupAsteroids.get(i)).move();
+        (groupAsteroids.get(i)).show();
+      }
     }
   }
   else //makes lose screen
@@ -56,10 +70,7 @@ public void draw()
     if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
     {
       apollo.setAlive(true);
-      /*for (int i = 0; i < asteroids.length; i++)
-      {
-        asteroids[i] = new Asteroid();
-      }*/
+      apollo.setLives(3);
       for (int i = 0; i < groupAsteroids.size(); i++)
       {
         groupAsteroids.set(i, new Asteroid());
@@ -102,6 +113,7 @@ class Star
 class SpaceShip extends Floater  
 {
   private boolean alive;
+  private int lives;
   public SpaceShip()
   {
     corners = 7;
@@ -116,6 +128,7 @@ class SpaceShip extends Floater
     myDirectionY = 0;
     myPointDirection = 0;
     alive = true;
+    lives = 3;
   }
   public void setX(int x){myCenterX = x;}  
   public int getX(){return (int)myCenterX;}   
@@ -129,6 +142,8 @@ class SpaceShip extends Floater
   public double getPointDirection(){return myPointDirection;}
   public boolean getAlive(){return alive;}
   public void setAlive(boolean status){alive = status;}
+  public int getLives(){return lives;}
+  public void setLives(int num){lives = num;}
 }
 class Asteroid extends Floater
 {
