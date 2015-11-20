@@ -1,6 +1,5 @@
 //your variable declarations here
 SpaceShip apollo;
-//Asteroid[] asteroids;
 Star[] sky;
 ArrayList<Asteroid> groupAsteroids;
 
@@ -8,31 +7,24 @@ public void setup()
 {
   size(700,700);
   apollo = new SpaceShip();
-  //asteroids = new Asteroid[(int)(Math.random()*6)+5];
   groupAsteroids = new ArrayList<Asteroid>();
   sky = new Star[(int)(Math.random()*350)+300];
   for (int i = 0; i < sky.length; i++)
   {
     sky[i] = new Star();
   }
-  for (int i = 0; i < 10/*asteroids.length*/; i++)
+  for (int i = 0; i < (int)(Math.random()*9)+5; i++)
   {
-    //asteroids[i] = new Asteroid();
     groupAsteroids.add(new Asteroid());
   }
+  //System.out.println(groupAsteroids.size());
 }
 public void draw() 
 {
-  if ((get(apollo.getX(), apollo.getY()) == color(255))) //to determine if spaceship has crashed
-  {
-    apollo.setLives(apollo.getLives()-1);
-  }
-
   if (apollo.getLives() == 0)
   {
     apollo.setAlive(false);
   }
- 
   if (apollo.getAlive() == true){
     background(0);
     for (int i = 0; i < sky.length; i++)
@@ -44,11 +36,39 @@ public void draw()
     text("Lives: " + apollo.getLives(), 40, 40);
     apollo.move();
     apollo.show();
+    if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
+      {
+        background(0);
+        textSize(32);
+        stroke(255);
+        fill(255);
+        text("You win :)", 280, 300);
+        strokeWeight(3);
+        noFill();
+        rect(260, 400, 200, 50);  
+        text("RESTART", 290, 435);
+        if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
+        {
+          apollo.setAlive(true);
+          apollo.setLives(3);
+          for (int i = 0; i < groupAsteroids.size(); i++)
+          {
+            groupAsteroids.remove(i);
+          }
+          for (int i = 0; i < (int)(Math.random()*9)+5; i++)
+          {
+            groupAsteroids.add(new Asteroid());
+          }
+          apollo.setDirectionX(0);
+          apollo.setDirectionY(0);
+        } //restarts the game
+      }
     for (int i = 0; i < groupAsteroids.size(); i++)
     {
       if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
       {
-        groupAsteroids.remove(i);
+        groupAsteroids.remove(i); //asteroid gets deleted
+        apollo.setLives(apollo.getLives()-1); //reduces # of lives
       }
       else
       {
@@ -61,6 +81,7 @@ public void draw()
   {
     background(0);
     textSize(32);
+    fill(255);
     text("Try again", 280, 300);
     stroke(255);
     strokeWeight(3);
@@ -73,7 +94,11 @@ public void draw()
       apollo.setLives(3);
       for (int i = 0; i < groupAsteroids.size(); i++)
       {
-        groupAsteroids.set(i, new Asteroid());
+        groupAsteroids.remove(i);
+      }
+      for (int i = 0; i < (int)(Math.random()*9)+5; i++)
+      {
+        groupAsteroids.add(new Asteroid());
       }
       apollo.setDirectionX(0);
       apollo.setDirectionY(0);
@@ -150,7 +175,7 @@ class Asteroid extends Floater
   private int rotSpeed;
   public Asteroid()
   {
-    rotSpeed = (int)(Math.random()*13)-6;
+    rotSpeed = (int)(Math.random()*11)-5;
     if(rotSpeed == 0)
     {
       rotSpeed = (int)(Math.random()*6)+2;
