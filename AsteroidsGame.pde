@@ -2,10 +2,12 @@
 SpaceShip apollo;
 Star[] sky;
 ArrayList<Asteroid> groupAsteroids;
+Bullet bang;
 
 public void setup() 
 {
   size(700,700);
+  bang = new Bullet(apollo);
   apollo = new SpaceShip();
   groupAsteroids = new ArrayList<Asteroid>();
   sky = new Star[(int)(Math.random()*350)+300];
@@ -36,6 +38,7 @@ public void draw()
     text("Lives: " + apollo.getLives(), 40, 40);
     apollo.move();
     apollo.show();
+    bang.show();
     if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
       {
         background(0);
@@ -212,6 +215,34 @@ class Asteroid extends Floater
   {
     rotate(rotSpeed);
     super.move();
+  }
+  public void setX(int x){myCenterX = x;}  
+  public int getX(){return (int)myCenterX;}   
+  public void setY(int y){myCenterY = y;}   
+  public int getY(){return (int)myCenterY;}   
+  public void setDirectionX(double x){myDirectionX = x;}  
+  public double getDirectionX(){return myDirectionX;}  
+  public void setDirectionY(double y){myDirectionY = y;}   
+  public double getDirectionY(){return myDirectionY;} 
+  public void setPointDirection(int degrees){myPointDirection = degrees;} 
+  public double getPointDirection(){return myPointDirection;}
+}
+class Bullet extends Floater
+{
+  private double dRadians;
+  Bullet(SpaceShip theShip)
+  {
+    myCenterX = theShip.getX();
+    myCenterY = theShip.getY();
+    myPointDirection = theShip.getPointDirection();
+    dRadians = myPointDirection*(Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + theShip.getDirectionX();
+    myDirectionY = 5 * Math.sin(dRadians) + theShip.getDirectionY();
+  }
+  public void show()
+  {
+    fill(255);
+    ellipse((int)myCenterX, (int)myCenterY, 3, 3);
   }
   public void setX(int x){myCenterX = x;}  
   public int getX(){return (int)myCenterX;}   
