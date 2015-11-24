@@ -7,8 +7,8 @@ Bullet bang;
 public void setup() 
 {
   size(700,700);
-  bang = new Bullet(apollo);
   apollo = new SpaceShip();
+  bang = new Bullet(apollo);
   groupAsteroids = new ArrayList<Asteroid>();
   sky = new Star[(int)(Math.random()*350)+300];
   for (int i = 0; i < sky.length; i++)
@@ -35,7 +35,7 @@ public void draw()
     }
     textSize(20);
     fill(255);
-    text("Lives: " + apollo.getLives(), 40, 40);
+    text("Lives: " + apollo.getLives(), 40, 40);    
     apollo.move();
     apollo.show();
     bang.show();
@@ -230,7 +230,7 @@ class Asteroid extends Floater
 class Bullet extends Floater
 {
   private double dRadians;
-  Bullet(SpaceShip theShip)
+  public Bullet(SpaceShip theShip)
   {
     myCenterX = theShip.getX();
     myCenterY = theShip.getY();
@@ -242,6 +242,7 @@ class Bullet extends Floater
   public void show()
   {
     fill(255);
+    stroke(255);
     ellipse((int)myCenterX, (int)myCenterY, 3, 3);
   }
   public void setX(int x){myCenterX = x;}  
