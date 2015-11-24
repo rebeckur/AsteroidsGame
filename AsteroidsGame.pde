@@ -2,14 +2,14 @@
 SpaceShip apollo;
 Star[] sky;
 ArrayList<Asteroid> groupAsteroids;
-Bullet bang;
+ArrayList<Bullet> arsenal;
 
 public void setup() 
 {
   size(700,700);
   apollo = new SpaceShip();
-  bang = new Bullet(apollo);
   groupAsteroids = new ArrayList<Asteroid>();
+  arsenal = new ArrayList<Bullet>();
   sky = new Star[(int)(Math.random()*350)+300];
   for (int i = 0; i < sky.length; i++)
   {
@@ -38,7 +38,14 @@ public void draw()
     text("Lives: " + apollo.getLives(), 40, 40);    
     apollo.move();
     apollo.show();
-    bang.show();
+    if (arsenal.size() > 0)
+    {
+      for (int i = 0; i < arsenal.size(); i++)
+      {
+        arsenal.get(i).move();
+        arsenal.get(i).show();
+      }
+    }
     if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
       {
         background(0);
@@ -54,10 +61,8 @@ public void draw()
         {
           apollo.setAlive(true);
           apollo.setLives(3);
-          for (int i = 0; i < groupAsteroids.size(); i++)
-          {
-            groupAsteroids.remove(i);
-          }
+          groupAsteroids.clear(); // removes all asteroids
+          arsenal.clear(); //removes all bullets
           for (int i = 0; i < (int)(Math.random()*9)+5; i++)
           {
             groupAsteroids.add(new Asteroid());
@@ -95,14 +100,12 @@ public void draw()
     {
       apollo.setAlive(true);
       apollo.setLives(3);
-      for (int i = 0; i < groupAsteroids.size(); i++)
-      {
-        groupAsteroids.remove(i);
-      }
+      groupAsteroids.clear(); // removes all asteroids
       for (int i = 0; i < (int)(Math.random()*9)+5; i++)
       {
         groupAsteroids.add(new Asteroid());
       }
+      arsenal.clear(); //removes all bullets
       apollo.setDirectionX(0);
       apollo.setDirectionY(0);
     } //makes restart button
@@ -121,6 +124,11 @@ public void keyPressed()
     apollo.setPointDirection((int)(Math.random()*360));
     apollo.setDirectionX(0);
     apollo.setDirectionY(0);
+  }
+  if (key == ' ')
+  {
+    arsenal.add(new Bullet(apollo));
+    //System.out.println("# of bullets: " + arsenal.size());
   }
 }
 class Star
@@ -185,9 +193,9 @@ class Asteroid extends Floater
     } //making sure all the asteroids rotate
     if ((int)(Math.random()*2) == 0)
     {
-      corners = 5;
-      int[] xS = {-4, 1, -7, 9, 8};
-      int[] yS = {-10, -3, 0, 7, -5};
+      corners = 6;
+      int[] xS = {-6, 3, -8, 5, 10, 8};
+      int[] yS = {-10, -5, 0, 7, 9, -8};
       xCorners = xS;
       yCorners = yS;
     }
@@ -199,7 +207,7 @@ class Asteroid extends Floater
       xCorners = xS2;
       yCorners = yS2;
     } //random variations of an asteroid in the array
-    myColor = color(255);
+    myColor = color(0);
     myCenterX = (int)(Math.random()*700);
     myCenterY = (int)(Math.random()*700);
     myDirectionX = (int)(Math.random()*6)-2;
@@ -215,6 +223,12 @@ class Asteroid extends Floater
   {
     rotate(rotSpeed);
     super.move();
+  }
+  public void show()
+  {
+    strokeWeight(1);
+    stroke(255);
+    super.show();
   }
   public void setX(int x){myCenterX = x;}  
   public int getX(){return (int)myCenterX;}   
@@ -241,9 +255,9 @@ class Bullet extends Floater
   }
   public void show()
   {
-    fill(255);
-    stroke(255);
-    ellipse((int)myCenterX, (int)myCenterY, 3, 3);
+    fill(255, 0, 0);
+    stroke(255, 0, 0);
+    ellipse((int)myCenterX, (int)myCenterY, 2, 2);
   }
   public void setX(int x){myCenterX = x;}  
   public int getX(){return (int)myCenterX;}   
@@ -317,7 +331,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   public void show ()  //Draws the floater at the current position  
   {             
     fill(myColor);   
-    stroke(myColor);    
+    //stroke(myColor);    
     //convert degrees to radians for sin and cos         
     double dRadians = myPointDirection*(Math.PI/180);                 
     int xRotatedTranslated, yRotatedTranslated;    
