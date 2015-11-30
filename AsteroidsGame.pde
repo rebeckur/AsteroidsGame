@@ -29,9 +29,9 @@ public void draw()
   }
   if (apollo.getAlive() == true){
     background(0);
-    for (int i = 0; i < sky.length; i++)
+    for (Star stars : sky)
     {
-      sky[i].show();
+      stars.show();
     }
     textSize(20);
     fill(255);
@@ -40,37 +40,37 @@ public void draw()
     apollo.show();
     if (arsenal.size() > 0)
     {
-      for (int i = 0; i < arsenal.size(); i++)
+      for (Bullet tempBullet : arsenal)
       {
-        arsenal.get(i).move();
-        arsenal.get(i).show();
+        tempBullet.move();
+        tempBullet.show();
       }
     }
     if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
+    {
+      background(0);
+      textSize(32);
+      stroke(255);
+      fill(255);
+      text("You win :)", 280, 300);
+      strokeWeight(3);
+      noFill();
+      rect(260, 400, 200, 50);  
+      text("RESTART", 290, 435);
+      if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
       {
-        background(0);
-        textSize(32);
-        stroke(255);
-        fill(255);
-        text("You win :)", 280, 300);
-        strokeWeight(3);
-        noFill();
-        rect(260, 400, 200, 50);  
-        text("RESTART", 290, 435);
-        if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
+        apollo.setAlive(true);
+        apollo.setLives(3);
+        groupAsteroids.clear(); // removes all asteroids
+        arsenal.clear(); //removes all bullets
+        for (int i = 0; i < (int)(Math.random()*9)+5; i++)
         {
-          apollo.setAlive(true);
-          apollo.setLives(3);
-          groupAsteroids.clear(); // removes all asteroids
-          arsenal.clear(); //removes all bullets
-          for (int i = 0; i < (int)(Math.random()*9)+5; i++)
-          {
-            groupAsteroids.add(new Asteroid());
-          }
-          apollo.setDirectionX(0);
-          apollo.setDirectionY(0);
-        } //restarts the game
-      }
+          groupAsteroids.add(new Asteroid());
+        }
+        apollo.setDirectionX(0);
+        apollo.setDirectionY(0);
+      } //restarts the game
+    }
     for (int i = 0; i < groupAsteroids.size(); i++)
     {
       if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
