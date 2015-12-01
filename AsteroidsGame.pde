@@ -27,7 +27,8 @@ public void draw()
   {
     apollo.setAlive(false);
   }
-  if (apollo.getAlive() == true){
+  if (apollo.getAlive() == true)
+  { //runs the game
     background(0);
     for (Star stars : sky)
     {
@@ -38,14 +39,6 @@ public void draw()
     text("Lives: " + apollo.getLives(), 40, 40);    
     apollo.move();
     apollo.show();
-    if (arsenal.size() > 0)
-    {
-      for (Bullet tempBullet : arsenal)
-      {
-        tempBullet.move();
-        tempBullet.show();
-      }
-    }
     if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
     {
       background(0);
@@ -57,12 +50,12 @@ public void draw()
       noFill();
       rect(260, 400, 200, 50);  
       text("RESTART", 290, 435);
+      arsenal.clear(); //removes all bullets
       if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
       {
         apollo.setAlive(true);
         apollo.setLives(3);
         groupAsteroids.clear(); // removes all asteroids
-        arsenal.clear(); //removes all bullets
         for (int i = 0; i < (int)(Math.random()*9)+5; i++)
         {
           groupAsteroids.add(new Asteroid());
@@ -70,6 +63,26 @@ public void draw()
         apollo.setDirectionX(0);
         apollo.setDirectionY(0);
       } //restarts the game
+    }
+    if (arsenal.size() > 0)
+    {
+      for (int j = 0; j < arsenal.size(); j++)
+      {
+        for (int i = 0; i < groupAsteroids.size(); i++)
+        {
+          if (dist(arsenal.get(j).getX(), arsenal.get(j).getY(), groupAsteroids.get(i).getX(), groupAsteroids.get(i).getY()) < 14)
+          {
+            groupAsteroids.remove(i);
+            arsenal.remove(j);
+            //System.out.println("Bullet touched an asteroid");
+          }
+        }
+      }
+      for (Bullet tempBullet : arsenal)
+      {
+        tempBullet.move();
+        tempBullet.show();
+      } 
     }
     for (int i = 0; i < groupAsteroids.size(); i++)
     {
@@ -85,7 +98,8 @@ public void draw()
       }
     }
   }
-  else //makes lose screen
+
+  if (apollo.getAlive() == false) //makes lose screen
   {
     background(0);
     textSize(32);
