@@ -64,25 +64,23 @@ public void draw()
         apollo.setDirectionY(0);
       } //restarts the game
     }
-    if (arsenal.size() > 0)
+    for (int i = 0; i < arsenal.size(); i++)
     {
-      for (int j = 0; j < arsenal.size(); j++)
+      arsenal.get(i).move();
+      arsenal.get(i).show();
+      if (arsenal.get(i).getX() > 695 || arsenal.get(i).getX() < 5 || arsenal.get(i).getY() > 695 || arsenal.get(i).getY() < 5)
       {
-        for (int i = 0; i < groupAsteroids.size(); i++)
+        arsenal.remove(i);
+      }
+      for (int j = 0; j < groupAsteroids.size(); j++)
+      {
+        if (dist(arsenal.get(i).getX(), arsenal.get(i).getY(), groupAsteroids.get(j).getX(), groupAsteroids.get(j).getY()) < 14)
         {
-          if (dist(arsenal.get(j).getX(), arsenal.get(j).getY(), groupAsteroids.get(i).getX(), groupAsteroids.get(i).getY()) < 14)
-          {
-            groupAsteroids.remove(i);
-            arsenal.remove(j);
-            //System.out.println("Bullet touched an asteroid");
-          }
+          groupAsteroids.remove(j);
+          arsenal.remove(i);
+          System.out.println("Bullet touched an asteroid");
         }
       }
-      for (Bullet tempBullet : arsenal)
-      {
-        tempBullet.move();
-        tempBullet.show();
-      } 
     }
     for (int i = 0; i < groupAsteroids.size(); i++)
     {
@@ -142,7 +140,7 @@ public void keyPressed()
   if (key == ' ')
   {
     arsenal.add(new Bullet(apollo));
-    //System.out.println("# of bullets: " + arsenal.size());
+    System.out.println("# of bullets: " + arsenal.size());
   }
 }
 class Star
