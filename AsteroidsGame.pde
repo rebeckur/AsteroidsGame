@@ -78,7 +78,7 @@ public void draw()
         {
           groupAsteroids.remove(j);
           arsenal.remove(i);
-          System.out.println("Bullet touched an asteroid");
+          //System.out.println("Bullet touched an asteroid");
         }
       }
     }
@@ -140,7 +140,7 @@ public void keyPressed()
   if (key == ' ')
   {
     arsenal.add(new Bullet(apollo));
-    System.out.println("# of bullets: " + arsenal.size());
+    //System.out.println("# of bullets: " + arsenal.size());
   }
 }
 class Star
