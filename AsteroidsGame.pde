@@ -23,13 +23,13 @@ public void setup()
 }
 public void draw() 
 {
+  background(0);
   if (apollo.getLives() == 0)
   {
     apollo.setAlive(false);
   }
   if (apollo.getAlive() == true)
   { //runs the game
-    background(0);
     for (Star stars : sky)
     {
       stars.show();
@@ -68,38 +68,43 @@ public void draw()
     {
       arsenal.get(i).move();
       arsenal.get(i).show();
+    }
+    
+    for (int i = 0; i < arsenal.size(); i++)
+    {
       if (arsenal.get(i).getX() > 695 || arsenal.get(i).getX() < 5 || arsenal.get(i).getY() > 695 || arsenal.get(i).getY() < 5)
       {
         arsenal.remove(i);
-      }
-      for (int j = 0; j < groupAsteroids.size(); j++)
-      {
-        if (dist(arsenal.get(i).getX(), arsenal.get(i).getY(), groupAsteroids.get(j).getX(), groupAsteroids.get(j).getY()) < 14)
-        {
-          groupAsteroids.remove(j);
-          arsenal.remove(i);
-          //System.out.println("Bullet touched an asteroid");
-        }
+        break;
       }
     }
+    
     for (int i = 0; i < groupAsteroids.size(); i++)
     {
-      if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
+      (groupAsteroids.get(i)).move();
+      (groupAsteroids.get(i)).show();
+       if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
       {
         groupAsteroids.remove(i); //asteroid gets deleted
         apollo.setLives(apollo.getLives()-1); //reduces # of lives
       }
       else
       {
-        (groupAsteroids.get(i)).move();
-        (groupAsteroids.get(i)).show();
-      }
+        for (int j = 0; j < arsenal.size(); j++)
+        {
+          if (dist(arsenal.get(j).getX(), arsenal.get(j).getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
+          {
+            groupAsteroids.remove(i); //asteroid gets deleted
+            arsenal.remove(j);
+            break;
+          }
+        } 
+      } 
     }
   }
 
   if (apollo.getAlive() == false) //makes lose screen
   {
-    background(0);
     textSize(32);
     fill(255);
     text("Try again", 280, 300);
