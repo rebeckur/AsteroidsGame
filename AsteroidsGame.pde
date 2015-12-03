@@ -3,6 +3,8 @@ SpaceShip apollo;
 Star[] sky;
 ArrayList<Asteroid> groupAsteroids;
 ArrayList<Bullet> arsenal;
+boolean goUp, goDown, goLeft, goRight;
+ArrayList<HealthPack> health;
 
 public void setup() 
 {
@@ -11,6 +13,7 @@ public void setup()
   groupAsteroids = new ArrayList<Asteroid>();
   arsenal = new ArrayList<Bullet>();
   sky = new Star[(int)(Math.random()*350)+300];
+  health = new ArrayList<HealthPack>();
   for (int i = 0; i < sky.length; i++)
   {
     sky[i] = new Star();
@@ -19,7 +22,15 @@ public void setup()
   {
     groupAsteroids.add(new Asteroid());
   }
+  for (int i = 0; i < 2; i++)
+  {
+    health.add(new HealthPack());
+  }
   //System.out.println(groupAsteroids.size());
+  goUp = false;
+  goDown = false;
+  goLeft = false;
+  goRight = false;
 }
 public void draw() 
 {
@@ -39,6 +50,19 @@ public void draw()
     text("Lives: " + apollo.getLives(), 40, 40);    
     apollo.move();
     apollo.show();
+    if (goUp){apollo.accelerate(0.2);}              //allows users to press multiple 
+    if (goDown){apollo.accelerate(-0.2);}           //keys at the same time to move and shoot
+    if (goLeft){apollo.rotate(-6);}
+    if (goRight){apollo.rotate(6);}
+    if (apollo.getLives() == 1)
+    {
+      health.get(0).show();
+    }
+    if (dist(apollo.getX(), apollo.getY(), health.get(0).getX(), health.get(0).getY()) < 11)
+    {
+      apollo.setLives(3);
+      health.remove(0);
+    }
     if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
     {
       background(0);
@@ -62,14 +86,15 @@ public void draw()
         }
         apollo.setDirectionX(0);
         apollo.setDirectionY(0);
+        apollo.setX(350);     // positions ship back
+        apollo.setY(350);     // to the center of the screen
       } //restarts the game
     }
     for (int i = 0; i < arsenal.size(); i++)
     {
       arsenal.get(i).move();
       arsenal.get(i).show();
-    }
-    
+    }//showing the bullets
     for (int i = 0; i < arsenal.size(); i++)
     {
       if (arsenal.get(i).getX() > 695 || arsenal.get(i).getX() < 5 || arsenal.get(i).getY() > 695 || arsenal.get(i).getY() < 5)
@@ -77,13 +102,13 @@ public void draw()
         arsenal.remove(i);
         break;
       }
-    }
+    }//removes the bullets that touch the sides of the screen
     
     for (int i = 0; i < groupAsteroids.size(); i++)
     {
       (groupAsteroids.get(i)).move();
       (groupAsteroids.get(i)).show();
-       if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
+      if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
       {
         groupAsteroids.remove(i); //asteroid gets deleted
         apollo.setLives(apollo.getLives()-1); //reduces # of lives
@@ -95,14 +120,13 @@ public void draw()
           if (dist(arsenal.get(j).getX(), arsenal.get(j).getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
           {
             groupAsteroids.remove(i); //asteroid gets deleted
-            arsenal.remove(j);
-            break;
+            arsenal.remove(j); //bullet is removed
+            break; //stops the loop from running, helped remove OutOfBoundsException error
           }
         } 
       } 
     }
   }
-
   if (apollo.getAlive() == false) //makes lose screen
   {
     textSize(32);
@@ -125,15 +149,17 @@ public void draw()
       arsenal.clear(); //removes all bullets
       apollo.setDirectionX(0);
       apollo.setDirectionY(0);
+      apollo.setX(350);     // positions ship back
+      apollo.setY(350);     // to the center of the screen
     } //makes restart button
   }
 }
 public void keyPressed()
 {
-  if (keyCode == UP) {apollo.accelerate(0.9);}//accelerate
-  if (keyCode == DOWN) {apollo.accelerate(-0.9);} //decelerate
-  if (keyCode == LEFT) {apollo.rotate(-10);} //rotate left 
-  if (keyCode == RIGHT) {apollo.rotate(10);} //rotate right 
+  if (keyCode == UP) {goUp = true;/*apollo.accelerate(0.9);*/}
+  if (keyCode == DOWN) {goDown = true;/*apollo.accelerate(-0.9);*/}
+  if (keyCode == LEFT) {goLeft = true;/*apollo.rotate(-10);*/}
+  if (keyCode == RIGHT) {goRight = true;/*apollo.rotate(10);*/} 
   if (key == ENTER) //hyperspace
   {
     apollo.setX((int)(Math.random()*500)+50);
@@ -147,6 +173,13 @@ public void keyPressed()
     arsenal.add(new Bullet(apollo));
     //System.out.println("# of bullets: " + arsenal.size());
   }
+}
+public void keyReleased()
+{
+  if (keyCode == UP) {goUp = false;}
+  if (keyCode == DOWN) {goDown = false;}
+  if (keyCode == LEFT) {goLeft = false;}
+  if (keyCode == RIGHT) {goRight = false;} 
 }
 class Star
 {
@@ -286,6 +319,25 @@ class Bullet extends Floater
   public double getDirectionY(){return myDirectionY;} 
   public void setPointDirection(int degrees){myPointDirection = degrees;} 
   public double getPointDirection(){return myPointDirection;}
+}
+class HealthPack
+{
+  int packX, packY;
+  int packColor;
+  public HealthPack()
+  {
+    packX = (int)(Math.random()*650)+10;
+    packY = (int)(Math.random()*650)+10;
+    packColor = color(0, 150, 50);
+  }
+  public int getX(){return packX;}
+  public int getY(){return packY;}
+  public void show()
+  {
+    fill(packColor);
+    stroke(packColor);
+    rect(packX, packY, 10, 10);
+  }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
