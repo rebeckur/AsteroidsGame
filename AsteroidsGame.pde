@@ -318,7 +318,6 @@ class LargeAsteroid extends Asteroid
       myDirectionY = (int)(Math.random()*3)+1;
     } //making sure none of the asteroids are idle
     myPointDirection = 0;
-    }
   }
 }
 class Bullet extends Floater
