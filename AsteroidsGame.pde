@@ -58,11 +58,13 @@ public void draw()
     {
       health.get(0).show();
     }
-    if (dist(apollo.getX(), apollo.getY(), health.get(0).getX(), health.get(0).getY()) < 11)
+    if (dist(apollo.getX(), apollo.getY(), health.get(0).getX(), health.get(0).getY()) < 15)
     {
       apollo.setLives(3);
       health.remove(0);
+      health.add(new HealthPack());
     }
+    
     if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
     {
       background(0);
@@ -233,7 +235,7 @@ class SpaceShip extends Floater
 }
 class Asteroid extends Floater
 {
-  private int rotSpeed;
+  protected int rotSpeed;
   public Asteroid()
   {
     rotSpeed = (int)(Math.random()*11)-5;
@@ -291,6 +293,34 @@ class Asteroid extends Floater
   public void setPointDirection(int degrees){myPointDirection = degrees;} 
   public double getPointDirection(){return myPointDirection;}
 }
+class LargeAsteroid extends Asteroid
+{ 
+  public LargeAsteroid()
+  {
+    rotSpeed = (int)(Math.random()*11)-5;
+    if(rotSpeed == 0)
+    {
+      rotSpeed = (int)(Math.random()*6)+2;
+    } //making sure all the asteroids rotate
+    corners = 9;
+    int[] xS2 = {10, 6, 0, -8, -7, -3, -10, -1, 4};
+    int[] yS2 = {0, -6, -10, -10, -3, -2, 2, 9, 7};
+    xCorners = xS2;
+    yCorners = yS2;
+    myColor = color(0);
+    myCenterX = (int)(Math.random()*700);
+    myCenterY = (int)(Math.random()*700);
+    myDirectionX = (int)(Math.random()*6)-2;
+    myDirectionY = (int)(Math.random()*6)-2;
+    if (myDirectionX == 0 && myDirectionY == 0)
+    {
+      myDirectionX = (int)(Math.random()*3)+1;
+      myDirectionY = (int)(Math.random()*3)+1;
+    } //making sure none of the asteroids are idle
+    myPointDirection = 0;
+    }
+  }
+}
 class Bullet extends Floater
 {
   private double dRadians;
@@ -326,8 +356,8 @@ class HealthPack
   int packColor;
   public HealthPack()
   {
-    packX = (int)(Math.random()*650)+10;
-    packY = (int)(Math.random()*650)+10;
+    packX = (int)(Math.random()*660)+10;
+    packY = (int)(Math.random()*660)+10;
     packColor = color(0, 150, 50);
   }
   public int getX(){return packX;}
