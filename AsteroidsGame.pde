@@ -22,11 +22,15 @@ public void setup()
   {
     groupAsteroids.add(new Asteroid());
   }
+  for (int i = 0; i < (int)(Math.random()*5); i++)
+  {
+    groupAsteroids.add(i, new LargeAsteroid());
+  }
   for (int i = 0; i < 2; i++)
   {
     health.add(new HealthPack());
   }
-  //System.out.println(groupAsteroids.size());
+  //System.out.println(groupAsteroids);
   goUp = false;
   goDown = false;
   goLeft = false;
@@ -85,6 +89,10 @@ public void draw()
         for (int i = 0; i < (int)(Math.random()*9)+5; i++)
         {
           groupAsteroids.add(new Asteroid());
+        }
+        for (int i = 0; i < (int)(Math.random()*5); i++)
+        {
+          groupAsteroids.add(i, new LargeAsteroid());
         }
         apollo.setDirectionX(0);
         apollo.setDirectionY(0);
@@ -147,6 +155,10 @@ public void draw()
       for (int i = 0; i < (int)(Math.random()*9)+5; i++)
       {
         groupAsteroids.add(new Asteroid());
+      }
+      for (int i = 0; i < (int)(Math.random()*4); i++)
+      {
+        groupAsteroids.add(i, new LargeAsteroid());
       }
       arsenal.clear(); //removes all bullets
       apollo.setDirectionX(0);
@@ -297,14 +309,14 @@ class LargeAsteroid extends Asteroid
 { 
   public LargeAsteroid()
   {
-    rotSpeed = (int)(Math.random()*11)-5;
+    rotSpeed = (int)(Math.random()*9)-4;
     if(rotSpeed == 0)
     {
       rotSpeed = (int)(Math.random()*6)+2;
     } //making sure all the asteroids rotate
-    corners = 9;
-    int[] xS2 = {10, 6, 0, -8, -7, -3, -10, -1, 4};
-    int[] yS2 = {0, -6, -10, -10, -3, -2, 2, 9, 7};
+    corners = 7;
+    int[] xS2 = {0, 21, 30, 24, 0, -24, -18};
+    int[] yS2 = {-9, -21, 0, 21, 18, 3, -18};
     xCorners = xS2;
     yCorners = yS2;
     myColor = color(0);
@@ -365,7 +377,7 @@ class HealthPack
   {
     fill(packColor);
     stroke(packColor);
-    rect(packX, packY, 10, 10);
+    rect(packX, packY, 10, 10, 5);
   }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
