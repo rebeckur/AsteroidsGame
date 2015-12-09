@@ -18,11 +18,11 @@ public void setup()
   {
     sky[i] = new Star();
   }
-  for (int i = 0; i < (int)(Math.random()*9)+5; i++)
+  for (int i = 0; i < (int)(Math.random()*5)+5; i++)
   {
     groupAsteroids.add(new Asteroid());
   }
-  for (int i = 0; i < (int)(Math.random()*5); i++)
+  for (int i = 0; i < (int)(Math.random()*5)+2; i++)
   {
     groupAsteroids.add(i, new LargeAsteroid());
   }
@@ -54,10 +54,10 @@ public void draw()
     text("Lives: " + apollo.getLives(), 40, 40);    
     apollo.move();
     apollo.show();
-    if (goUp){apollo.accelerate(0.2);}              //allows users to press multiple 
-    if (goDown){apollo.accelerate(-0.2);}           //keys at the same time to move and shoot
-    if (goLeft){apollo.rotate(-6);}
-    if (goRight){apollo.rotate(6);}
+    if (goUp){apollo.accelerate(0.1);}              //allows users to press multiple 
+    if (goDown){apollo.accelerate(-0.1);}           //keys at the same time to move and shoot
+    if (goLeft){apollo.rotate(-5);}
+    if (goRight){apollo.rotate(5);}
     if (apollo.getLives() == 1)
     {
       health.get(0).show();
@@ -90,7 +90,7 @@ public void draw()
         {
           groupAsteroids.add(new Asteroid());
         }
-        for (int i = 0; i < (int)(Math.random()*5); i++)
+        for (int i = 0; i < (int)(Math.random()*3)+1; i++)
         {
           groupAsteroids.add(i, new LargeAsteroid());
         }
@@ -118,7 +118,7 @@ public void draw()
     {
       (groupAsteroids.get(i)).move();
       (groupAsteroids.get(i)).show();
-      if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
+      if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 25)
       {
         groupAsteroids.remove(i); //asteroid gets deleted
         apollo.setLives(apollo.getLives()-1); //reduces # of lives
@@ -156,7 +156,7 @@ public void draw()
       {
         groupAsteroids.add(new Asteroid());
       }
-      for (int i = 0; i < (int)(Math.random()*4); i++)
+      for (int i = 0; i < (int)(Math.random()*3)+1; i++)
       {
         groupAsteroids.add(i, new LargeAsteroid());
       }
@@ -250,6 +250,7 @@ class Asteroid extends Floater
   protected int rotSpeed;
   public Asteroid()
   {
+    int n = 2;
     rotSpeed = (int)(Math.random()*11)-5;
     if(rotSpeed == 0)
     {
@@ -315,8 +316,8 @@ class LargeAsteroid extends Asteroid
       rotSpeed = (int)(Math.random()*6)+2;
     } //making sure all the asteroids rotate
     corners = 7;
-    int[] xS2 = {0, 21, 30, 24, 0, -24, -18};
-    int[] yS2 = {-9, -21, 0, 21, 18, 3, -18};
+    int[] xS2 = {0, 21, 30, 24, 0, -20, -14};
+    int[] yS2 = {-9, -21, 0, 21, 18, 5, -18};
     xCorners = xS2;
     yCorners = yS2;
     myColor = color(0);
@@ -377,7 +378,7 @@ class HealthPack
   {
     fill(packColor);
     stroke(packColor);
-    rect(packX, packY, 10, 10, 5);
+    rect(packX, packY, 10, 10, 2);
   }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
