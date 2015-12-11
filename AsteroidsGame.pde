@@ -26,10 +26,7 @@ public void setup()
   {
     groupAsteroids.add(i, new LargeAsteroid());
   }
-  for (int i = 0; i < 2; i++)
-  {
-    health.add(new HealthPack());
-  }
+  health.add(new HealthPack());
   //System.out.println(groupAsteroids);
   goUp = false;
   goDown = false;
@@ -58,17 +55,20 @@ public void draw()
     if (goDown){apollo.accelerate(-0.1);}           //keys at the same time to move and shoot
     if (goLeft){apollo.rotate(-5);}
     if (goRight){apollo.rotate(5);}
-    if (apollo.getLives() == 1)
+    if (health.size() > 0)
     {
-      health.get(0).show();
+      if (apollo.getLives() == 1)
+      {
+        health.get(0).show();
+        //System.out.println("# of healths: " + health.size());
+      }
+      if (dist(apollo.getX(), apollo.getY(), health.get(0).getX(), health.get(0).getY()) < 15)
+      {
+        apollo.setLives(3);
+        health.remove(0);
+        health.add(new HealthPack());
+      } //if player gets the health pack
     }
-    if (dist(apollo.getX(), apollo.getY(), health.get(0).getX(), health.get(0).getY()) < 15)
-    {
-      apollo.setLives(3);
-      health.remove(0);
-      health.add(new HealthPack());
-    }
-    
     if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
     {
       background(0);
@@ -98,6 +98,7 @@ public void draw()
         apollo.setDirectionY(0);
         apollo.setX(350);     // positions ship back
         apollo.setY(350);     // to the center of the screen
+        health.add(new HealthPack());
       } //restarts the game
     }
     for (int i = 0; i < arsenal.size(); i++)
@@ -113,27 +114,24 @@ public void draw()
         break;
       }
     }//removes the bullets that touch the sides of the screen
-    
     for (int i = 0; i < groupAsteroids.size(); i++)
     {
       (groupAsteroids.get(i)).move();
       (groupAsteroids.get(i)).show();
-      if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 25)
+      if (dist(apollo.getX(), apollo.getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 22)
       {
         groupAsteroids.remove(i); //asteroid gets deleted
         apollo.setLives(apollo.getLives()-1); //reduces # of lives
+        break;
       }
-      else
+      for (int j = 0; j < arsenal.size(); j++)
       {
-        for (int j = 0; j < arsenal.size(); j++)
+        if (dist(arsenal.get(j).getX(), arsenal.get(j).getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
         {
-          if (dist(arsenal.get(j).getX(), arsenal.get(j).getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
-          {
-            groupAsteroids.remove(i); //asteroid gets deleted
-            arsenal.remove(j); //bullet is removed
-            break; //stops the loop from running, helped remove OutOfBoundsException error
-          }
-        } 
+          groupAsteroids.remove(i); //asteroid gets deleted
+          arsenal.remove(j); //bullet is removed
+          break; //stops the loop from running, helped remove OutOfBoundsException error
+        }
       } 
     }
   }
@@ -165,6 +163,7 @@ public void draw()
       apollo.setDirectionY(0);
       apollo.setX(350);     // positions ship back
       apollo.setY(350);     // to the center of the screen
+      health.add(new HealthPack());
     } //makes restart button
   }
 }
