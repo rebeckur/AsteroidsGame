@@ -41,7 +41,7 @@ public void setup()
 public void draw() 
 {
   background(0);
-  if (apollo.getLives() == 0)
+  if (apollo.getLives() < 1)
   {
     apollo.setAlive(false);
   }
@@ -131,7 +131,7 @@ public void draw()
       if (dist(apollo.getX(), apollo.getY(), (bigAsteroids.get(i)).getX(), (bigAsteroids.get(i)).getY()) < 30)
       {
         bigAsteroids.remove(i); //asteroid gets deleted
-        apollo.setLives(apollo.getLives()-1); //reduces # of lives
+        apollo.setLives(apollo.getLives()-2); //reduces # of lives
         break;
       }
       for (int j = 0; j < arsenal.size(); j++)
