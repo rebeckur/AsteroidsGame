@@ -2,15 +2,19 @@
 SpaceShip apollo;
 Star[] sky;
 ArrayList<Asteroid> groupAsteroids;
+ArrayList<LargeAsteroid> bigAsteroids;
 ArrayList<Bullet> arsenal;
 boolean goUp, goDown, goLeft, goRight;
 ArrayList<HealthPack> health;
+int score;
+
 
 public void setup() 
 {
   size(700,700);
   apollo = new SpaceShip();
   groupAsteroids = new ArrayList<Asteroid>();
+  bigAsteroids = new ArrayList<LargeAsteroid>();
   arsenal = new ArrayList<Bullet>();
   sky = new Star[(int)(Math.random()*350)+300];
   health = new ArrayList<HealthPack>();
@@ -24,7 +28,7 @@ public void setup()
   }
   for (int i = 0; i < (int)(Math.random()*5)+2; i++)
   {
-    groupAsteroids.add(i, new LargeAsteroid());
+    bigAsteroids.add(new LargeAsteroid());
   }
   health.add(new HealthPack());
   //System.out.println(groupAsteroids);
@@ -32,6 +36,7 @@ public void setup()
   goDown = false;
   goLeft = false;
   goRight = false;
+  score = 0;
 }
 public void draw() 
 {
@@ -40,15 +45,16 @@ public void draw()
   {
     apollo.setAlive(false);
   }
-  if (apollo.getAlive() == true)
-  { //runs the game
+  if (apollo.getAlive() == true) 
+  { //runs the game when player has not died yet
     for (Star stars : sky)
     {
       stars.show();
     }
     textSize(20);
     fill(255);
-    text("Lives: " + apollo.getLives(), 40, 40);    
+    text("Lives: " + apollo.getLives(), 40, 40);
+    text("Score: " + score, 550, 40);    
     apollo.move();
     apollo.show();
     if (goUp){apollo.accelerate(0.1);}              //allows users to press multiple 
@@ -66,10 +72,10 @@ public void draw()
       {
         apollo.setLives(3);
         health.remove(0);
-        health.add(new HealthPack());
+        //health.add(new HealthPack());
       } //if player gets the health pack
     }
-    if (groupAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
+    if (groupAsteroids.size() == 0 && bigAsteroids.size() == 0) //checking to see if all asteroids destroyed while spacehip is still alive
     {
       background(0);
       textSize(32);
@@ -80,7 +86,10 @@ public void draw()
       noFill();
       rect(260, 400, 200, 50);  
       text("RESTART", 290, 435);
+      textSize(20);
+      text("Score: " + score, 300, 350);
       arsenal.clear(); //removes all bullets
+      health.clear(); 
       if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
       {
         apollo.setAlive(true);
@@ -99,6 +108,7 @@ public void draw()
         apollo.setX(350);     // positions ship back
         apollo.setY(350);     // to the center of the screen
         health.add(new HealthPack());
+        score = 0;
       } //restarts the game
     }
     for (int i = 0; i < arsenal.size(); i++)
@@ -114,6 +124,29 @@ public void draw()
         break;
       }
     }//removes the bullets that touch the sides of the screen
+    for (int i = 0; i < bigAsteroids.size(); i++)
+    {
+      (bigAsteroids.get(i)).move();
+      (bigAsteroids.get(i)).show();
+      if (dist(apollo.getX(), apollo.getY(), (bigAsteroids.get(i)).getX(), (bigAsteroids.get(i)).getY()) < 30)
+      {
+        bigAsteroids.remove(i); //asteroid gets deleted
+        apollo.setLives(apollo.getLives()-1); //reduces # of lives
+        break;
+      }
+      for (int j = 0; j < arsenal.size(); j++)
+      {
+        if (dist(arsenal.get(j).getX(), arsenal.get(j).getY(), (bigAsteroids.get(i)).getX(), (bigAsteroids.get(i)).getY()) < 20)
+        {
+          score+=2;
+          groupAsteroids.add(new Asteroid((bigAsteroids.get(i)).getX(), (bigAsteroids.get(i)).getY()));
+          groupAsteroids.add(new Asteroid((bigAsteroids.get(i)).getX()+30, (bigAsteroids.get(i)).getY()));//smaller asteroids created
+          bigAsteroids.remove(i); //asteroid gets deleted
+          arsenal.remove(j); //bullet is removed
+          break; //stops the loop from running, helped remove OutOfBoundsException error
+        }
+      } 
+    }
     for (int i = 0; i < groupAsteroids.size(); i++)
     {
       (groupAsteroids.get(i)).move();
@@ -128,6 +161,7 @@ public void draw()
       {
         if (dist(arsenal.get(j).getX(), arsenal.get(j).getY(), (groupAsteroids.get(i)).getX(), (groupAsteroids.get(i)).getY()) < 20)
         {
+          score++;
           groupAsteroids.remove(i); //asteroid gets deleted
           arsenal.remove(j); //bullet is removed
           break; //stops the loop from running, helped remove OutOfBoundsException error
@@ -145,6 +179,9 @@ public void draw()
     noFill();
     rect(260, 400, 200, 50);  
     text("RESTART", 290, 435);
+    textSize(20);
+    text("Score: " + score, 300, 350);
+    health.clear(); 
     if (mousePressed && ((mouseX < 460 && mouseX > 260) && (mouseY < 450 && mouseY > 400)))
     {
       apollo.setAlive(true);
@@ -159,11 +196,12 @@ public void draw()
         groupAsteroids.add(i, new LargeAsteroid());
       }
       arsenal.clear(); //removes all bullets
-      apollo.setDirectionX(0);
+      apollo.setDirectionX(0); //stops spaceship
       apollo.setDirectionY(0);
       apollo.setX(350);     // positions ship back
       apollo.setY(350);     // to the center of the screen
       health.add(new HealthPack());
+      score = 0;
     } //makes restart button
   }
 }
@@ -282,7 +320,43 @@ class Asteroid extends Floater
       myDirectionY = (int)(Math.random()*3)+1;
     } //making sure none of the asteroids are idle
     myPointDirection = 0;
+  }
+  public Asteroid(int x, int y)
+  {
+    int n = 2;
+    rotSpeed = (int)(Math.random()*11)-5;
+    if(rotSpeed == 0)
+    {
+      rotSpeed = (int)(Math.random()*6)+2;
+    } //making sure all the asteroids rotate
+    if ((int)(Math.random()*2) == 0)
+    {
+      corners = 6;
+      int[] xS = {-6, 3, -8, 5, 10, 8};
+      int[] yS = {-10, -5, 0, 7, 9, -8};
+      xCorners = xS;
+      yCorners = yS;
     }
+    else
+    {
+      corners = 9;
+      int[] xS2 = {10, 6, 0, -8, -7, -3, -10, -1, 4};
+      int[] yS2 = {0, -6, -10, -10, -3, -2, 2, 9, 7};
+      xCorners = xS2;
+      yCorners = yS2;
+    } //random variations of an asteroid in the array
+    myColor = color(0);
+    myCenterX = x;
+    myCenterY = y;
+    myDirectionX = (int)(Math.random()*6)-2;
+    myDirectionY = (int)(Math.random()*6)-2;
+    if (myDirectionX == 0 && myDirectionY == 0)
+    {
+      myDirectionX = (int)(Math.random()*3)+1;
+      myDirectionY = (int)(Math.random()*3)+1;
+    } //making sure none of the asteroids are idle
+    myPointDirection = 0;
+  }
   public void move()
   {
     rotate(rotSpeed);
