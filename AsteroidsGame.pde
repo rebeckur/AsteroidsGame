@@ -72,6 +72,7 @@ public void draw()
       {
         apollo.setLives(3);
         health.remove(0);
+        bigAsteroids.add(new LargeAsteroid());
         //health.add(new HealthPack());
       } //if player gets the health pack
     }
@@ -140,7 +141,7 @@ public void draw()
         {
           score+=2;
           groupAsteroids.add(new Asteroid((bigAsteroids.get(i)).getX(), (bigAsteroids.get(i)).getY()));
-          groupAsteroids.add(new Asteroid((bigAsteroids.get(i)).getX()+30, (bigAsteroids.get(i)).getY()));//smaller asteroids created
+          groupAsteroids.add(new Asteroid((bigAsteroids.get(i)).getX()+20, (bigAsteroids.get(i)).getY()));//smaller asteroids created
           bigAsteroids.remove(i); //asteroid gets deleted
           arsenal.remove(j); //bullet is removed
           break; //stops the loop from running, helped remove OutOfBoundsException error
