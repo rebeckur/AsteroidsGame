@@ -7,7 +7,7 @@ ArrayList<Bullet> arsenal;
 boolean goUp, goDown, goLeft, goRight;
 ArrayList<HealthPack> health;
 int score;
-
+boolean cheatScore;
 
 public void setup() 
 {
@@ -37,6 +37,7 @@ public void setup()
   goLeft = false;
   goRight = false;
   score = 0;
+  cheatScore = true;
 }
 public void draw() 
 {
@@ -96,13 +97,11 @@ public void draw()
         apollo.setAlive(true);
         apollo.setLives(3);
         groupAsteroids.clear(); // removes all asteroids
+        bigAsteroids.clear();
         for (int i = 0; i < (int)(Math.random()*9)+5; i++)
         {
           groupAsteroids.add(new Asteroid());
-        }
-        for (int i = 0; i < (int)(Math.random()*3)+1; i++)
-        {
-          groupAsteroids.add(i, new LargeAsteroid());
+          bigAsteroids.add(new LargeAsteroid());
         }
         apollo.setDirectionX(0);
         apollo.setDirectionY(0);
@@ -188,13 +187,14 @@ public void draw()
       apollo.setAlive(true);
       apollo.setLives(3);
       groupAsteroids.clear(); // removes all asteroids
+      bigAsteroids.clear();
       for (int i = 0; i < (int)(Math.random()*9)+5; i++)
       {
         groupAsteroids.add(new Asteroid());
       }
       for (int i = 0; i < (int)(Math.random()*3)+1; i++)
       {
-        groupAsteroids.add(i, new LargeAsteroid());
+        bigAsteroids.add(i, new LargeAsteroid());
       }
       arsenal.clear(); //removes all bullets
       apollo.setDirectionX(0); //stops spaceship
@@ -225,6 +225,18 @@ public void keyPressed()
     arsenal.add(new Bullet(apollo));
     //System.out.println("# of bullets: " + arsenal.size());
   }
+
+  //CHEATS :)
+  if (key == 'r')
+  {
+    bigAsteroids.clear();
+    score+=50;
+  } //all big asteroids are gone and you get points!
+  if (key == 's' && cheatScore)
+  {
+    score+=100;
+    cheatScore = false;
+  } //add 100 to the score only once!
 }
 public void keyReleased()
 {
